@@ -1,6 +1,11 @@
 "use client";
 
-const Heading = () => {
+interface HeadingProps {
+  tittle: string;
+  subtittle?: string;
+  center?: boolean;
+}
+const Heading: React.FC<HeadingProps> = () => {
   return <div>Heading</div>;
 };
 
