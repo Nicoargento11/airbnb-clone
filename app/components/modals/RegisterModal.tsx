@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
+import Modal from "./Modal";
 
 const RegisterModal = () => {
   const RegisterModal = useRegisterModal();
@@ -38,7 +39,16 @@ const RegisterModal = () => {
         setIsLoading(false);
       });
   };
-  return <div></div>;
+  return (
+    <Modal
+      disabled={isLoading}
+      isOpen={RegisterModal.isOpen}
+      tittle="Register"
+      actionLabel="Continue"
+      onClose={RegisterModal.onClose}
+      onSubmit={handleSubmit(onSubmit)}
+    />
+  );
 };
 
 export default RegisterModal;
