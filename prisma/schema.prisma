@@ -13,12 +13,12 @@ datasource db {
 model User {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
-  email          String?
+  email          String?   @unique
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
-  createAt       DateTime  @default(now())
-  updateAt       DateTime  @updatedAt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
   favoriteIds    String[]  @db.ObjectId
 
   accounts     Account[]
@@ -47,7 +47,7 @@ model Account {
 
 model Listing {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  tittle        String
+  title         String
   description   String
   imageSrc      String
   createdAt     DateTime @default(now())
@@ -59,8 +59,7 @@ model Listing {
   userId        String   @db.ObjectId
   price         Int
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   reservations Reservation[]
 }
 
@@ -70,9 +69,9 @@ model Reservation {
   listingId  String   @db.ObjectId
   startDate  DateTime
   endDate    DateTime
-  totalPtice Int
+  totalPrice Int
   createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
