@@ -2,9 +2,8 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
-import { Reservation } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { SafeListing, SafeUser } from "@/app/types";
+import { SafeListing, SafeUser, safeReservation } from "@/app/types";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import Container from "@/app/components/Container";
 import ListingHead from "@/app/components/listings/ListingHead";
@@ -20,7 +19,7 @@ const initialDateRange = {
   key: "selection",
 };
 interface ListingClientProps {
-  reservations?: Reservation[];
+  reservations?: safeReservation[];
   listing: SafeListing & {
     user: SafeUser;
   };
@@ -60,7 +59,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
     setIsLoading(true);
     axios
-      .post("api/reservations", {
+      .post("/api/reservations", {
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.endDate,
@@ -69,8 +68,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .then(() => {
         toast.success("listing reserved!");
         setDateRange(initialDateRange);
-        // Redirect to /trips
-        router.refresh();
+        router.push("/trips");
       })
       .catch((err) => {
         toast.error(err.message);
